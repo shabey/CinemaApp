@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using CinemaAppBackend.Interfaces;
 using CinemaAppBackend.Models;
+using CinemaAppBackend.UseCases;
 
 namespace CinemaAppBackend.Repositories
 {
@@ -10,15 +11,25 @@ namespace CinemaAppBackend.Repositories
     {
         private readonly CinemaHall _cinemaHall;
         private readonly IInitializeCinemaHall _initializeCinemaHall;
-        public CinemaAppBackendRepository(IInitializeCinemaHall initializeCinemaHall)
+        private readonly ICinemaHallBookingStatus _cinemaHallBookingStatus;
+        public CinemaAppBackendRepository()
         {
-            _initializeCinemaHall = initializeCinemaHall;
+            _initializeCinemaHall = new InitializeCinemaHall();
+            _cinemaHallBookingStatus = new CinemaHallBookingStatus();
             _cinemaHall = new CinemaHall();
         }
 
-        public void Initialize(int rows, int noOfSeats)
+        public void Initialize(string noOfRows, string noOfSeats)
         {
-            _initializeCinemaHall.Initialize(_cinemaHall.CinemaRoom,rows,noOfSeats);
+            _cinemaHall.CinemaRoom = _initializeCinemaHall.Initialize(noOfRows,noOfSeats);
+        }
+
+        public void ShowCurrentBookingStatus()
+        {
+           _cinemaHallBookingStatus.ShowCurrentBookingStatus(_cinemaHall.CinemaRoom);
+           Console.WriteLine();
+           Console.WriteLine("Press any key to go back !!!");
+           Console.ReadLine();
         }
     }
 }

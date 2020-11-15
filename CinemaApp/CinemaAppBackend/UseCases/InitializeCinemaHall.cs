@@ -5,41 +5,38 @@ using CinemaAppBackend.Interfaces;
 
 namespace CinemaAppBackend.UseCases
 {
-    public class InitializeCinemaHall:IInitializeCinemaHall
+    public class InitializeCinemaHall : IInitializeCinemaHall
     {
-        public void Initialize(Char[][] cinemaRoom, int noOfRows, int noOfSeats)
+        public int[][] Initialize(string rows, string seats)
         {
-            try
-            {
-                Validate(noOfRows,noOfSeats);
+            Validate(rows, seats); //Call validation
+            
+            var noOfRows = int.Parse(rows); 
+            var noOfSeats = int.Parse(seats);
 
-                cinemaRoom = new char[noOfRows][];
-                for (var row = 0; row < noOfRows; row++)
+            var cinemaRoom = new int[noOfRows][];
+
+            for (var row = 0; row < noOfRows; row++)
+            {
+                cinemaRoom[row] = new int[noOfSeats]; // initialize no of seats per row
+                for (var col = 0; col < cinemaRoom[row].Length; col++)
                 {
-                    cinemaRoom[row] = new char[noOfSeats]; // initialize no of seats per row
-                    for (var col = 0; col < cinemaRoom[row].Length; col++)
-                    {
-                        cinemaRoom[row][col] = 'A'; // make all seats available for booking
-                    }
+                    cinemaRoom[row][col] = (int)Constants.BookingStatus.Available; // make all seats available for booking
                 }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            
+
+            return cinemaRoom;
         }
 
-        private void Validate(int noOfRows, int noOfSeats)
+        private void Validate(string noOfRows, string noOfSeats)
         {
-            if (noOfRows <= 0 || noOfRows >= int.MaxValue)
+            if (!int.TryParse(noOfRows, out _))
             {
-                throw new Exception($"Invalid no of number of rows {noOfRows} entered. Please enter a valid number of number of rows");
+                throw new ArgumentOutOfRangeException(nameof(noOfRows), $"Invalid no of number of rows “{noOfRows}” entered. Please enter a valid number of number of rows");
             }
-            if (noOfSeats <= 0 || noOfSeats >= int.MaxValue)
+            if (!int.TryParse(noOfSeats, out _))
             {
-                throw new Exception($"Invalid no of seats {noOfSeats} entered. Please enter a valid number of seats");
+                throw new ArgumentOutOfRangeException(nameof(noOfSeats), $"Invalid no of seats “{noOfSeats}” entered. Please enter a valid number of seats");
             }
         }
     }

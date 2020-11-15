@@ -6,12 +6,12 @@ namespace CinemaAppBackend.Models
 {
     public class CinemaHall
     {
-        public char[][] CinemaRoom { get; set; }
+        public int[][] CinemaRoom { get; set; }
         public List<CinemaSeat> Seats { get; set; }
 
         public CinemaHall()
         {
-            CinemaRoom = new char[0][];
+            CinemaRoom = new int[0][];
             Seats = new List<CinemaSeat>();
         }
     }

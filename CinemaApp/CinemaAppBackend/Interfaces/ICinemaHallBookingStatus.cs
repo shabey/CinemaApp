@@ -4,8 +4,8 @@ using System.Text;
 
 namespace CinemaAppBackend.Interfaces
 {
-    public interface IInitializeCinemaHall
+    public interface ICinemaHallBookingStatus
     {
-        int[][] Initialize(string noOfRows, string noOfSeats);
+        void ShowCurrentBookingStatus(int[][] cinemaHall);
     }
 }

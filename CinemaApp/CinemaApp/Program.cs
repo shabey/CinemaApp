@@ -1,20 +1,25 @@
 ﻿using System;
+using System.Reflection;
+using CinemaApp.Extensions;
+using CinemaAppBackend.Interfaces;
+using CinemaAppBackend.Repositories;
 
 namespace CinemaApp
 {
     public class Program
     {
         private static ConsoleKeyInfo _choice;
-        static void Main(string[] args)
+        private static ICinemaAppBackendRepository _cinemaAppBackendRepository;
+        public static void Main(string[] args)
         {
-            
-            bool showOptionsMenu;
-            do
+            _cinemaAppBackendRepository = new CinemaAppBackendRepository();
+            while (ShowOptionsMenu())
             {
-                showOptionsMenu = ShowOptionsMenu();
-            } while (showOptionsMenu);
 
+            }
+           
         }
+
         private static bool ShowOptionsMenu()
         {
             Console.Clear();
@@ -28,21 +33,65 @@ namespace CinemaApp
             Console.WriteLine("E)   Exit");
             Console.Write("\r\nSelect an option: ");
             _choice = Console.ReadKey(false); // show the key as you read it
-            switch (_choice.KeyChar.ToString().ToLower())
+            switch (_choice.KeyChar.ToString().ToUpper())
             {
-                case "a":
+                case "A":
+                    {
+                        ShowCinemaHallInitializationMenu();
+                        break;
+                    }
+                case "B":
+                    {
+                        ShowCurrentBookingStatus();
+                        break;
+                    }
+                case "C":
                     return true;
-                case "b":
+                case "D":
                     return true;
-                case "c":
-                    return true;
-                case "d":
-                    return true;
-                case "e":
+                case "E":
                     return false;
                 default:
                     return true;
             }
+
+            return true;
+        }
+
+        private static void ShowCinemaHallInitializationMenu()
+        {
+            try
+            {
+                Console.Clear();
+                Console.WriteLine("Enter “number of rows” and “number of seats per row” for the cinema hall");
+                Console.WriteLine();
+                Console.Write("Enter no of rows: ");
+                var noOfRows = Console.ReadLine();
+                Console.Write("Enter no of seats: ");
+                var noOfSeats = Console.ReadLine();
+                Console.WriteLine();
+                Console.Clear();
+                _cinemaAppBackendRepository.Initialize(noOfRows, noOfSeats);
+                _cinemaAppBackendRepository.ShowCurrentBookingStatus();
+            }
+            catch (Exception e)
+            {
+                e.HandleError("Error initializing cinema hall");
+            }
+
+        }
+        private static void ShowCurrentBookingStatus()
+        {
+            try
+            {
+                Console.Clear();
+                _cinemaAppBackendRepository.ShowCurrentBookingStatus();
+            }
+            catch (Exception e)
+            {
+                e.HandleError("Error showing current booking status for cinema hall");
+            }
+
         }
     }
 }
