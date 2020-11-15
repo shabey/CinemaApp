@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Drawing;
 using CinemaAppBackend;
 using CinemaAppBackend.Extensions;
 using CinemaAppBackend.Interfaces;
@@ -74,7 +75,10 @@ namespace CinemaApp
                         break;
                     }
                 case "C":
-                    return true;
+                    {
+                        ReserveCinemaTicket();
+                        break;
+                    }
                 case "D":
                     return true;
                 case "E":
@@ -100,7 +104,7 @@ namespace CinemaApp
                 Console.WriteLine();
                 Console.Clear();
                 _cinemaAppBackendRepository.InitializeCinemaHall(noOfRows, noOfSeats);
-                _cinemaAppBackendRepository.ShowCurrentBookingStatus();
+                ShowCurrentBookingStatus();
             }
             catch (Exception e)
             {
@@ -114,6 +118,9 @@ namespace CinemaApp
             {
                 Console.Clear();
                 _cinemaAppBackendRepository.ShowCurrentBookingStatus();
+                Console.WriteLine();
+                Console.WriteLine("Press any key to go back to main menu !!!");
+                Console.ReadLine();
             }
             catch (Exception e)
             {
@@ -121,7 +128,40 @@ namespace CinemaApp
             }
 
         }
-
+        private static void ReserveCinemaTicket()
+        {
+            try
+            {
+                ConsoleKeyInfo reserveAnotherSeat;
+                do
+                {
+                    Console.Clear();
+                    _cinemaAppBackendRepository.ShowCurrentBookingStatus();
+                    Console.WriteLine();
+                    Console.WriteLine("Enter “seat number” for ticket reservation");
+                    Console.WriteLine();
+                    Console.Write("Enter row number: ");
+                    var rowNumber = Console.ReadLine();
+                    Console.Write("Enter seat number: ");
+                    var seatNumber = Console.ReadLine();
+                    Console.WriteLine();
+                    Console.Clear();
+                    _cinemaAppBackendRepository.ReserveCinemaTicket(rowNumber, seatNumber);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(
+                        $"Thank you for your reservation. Your seat is reserved at row {rowNumber} and seat number {seatNumber}");
+                    Console.ResetColor();
+                    _cinemaAppBackendRepository.ShowCurrentBookingStatus();
+                    Console.WriteLine();
+                    Console.Write("Do you want to reserve another seat? (Y/N): ");
+                    reserveAnotherSeat = Console.ReadKey(false); // show the key as you read it   
+                } while (reserveAnotherSeat.KeyChar.ToString().ToUpper() != "N");
+            }
+            catch (Exception e)
+            {
+                e.HandleError($"Error reserving ticket");
+            }
+        }
         private static void Setup()
         {
             IConfiguration configuration = new ConfigurationBuilder()
@@ -134,7 +174,7 @@ namespace CinemaApp
             var serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection, configuration);
 
-           _serviceProvider = serviceCollection.BuildServiceProvider();
+            _serviceProvider = serviceCollection.BuildServiceProvider();
 
             Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
         }
@@ -153,10 +193,14 @@ namespace CinemaApp
             }
 
             var useCaseConfiguration = new UseCaseConfiguration().
+                BuildCinemaHallValidationService().
                 BuildCinemaHallInitializationService().
-                BuildShowCinemaHallBookingStatusService();
+                BuildShowCinemaHallBookingStatusService().
+                BuildCinemaTicketReservationService();
+
+
             services.AddServices(useCaseConfiguration);
-            
+
         }
     }
 

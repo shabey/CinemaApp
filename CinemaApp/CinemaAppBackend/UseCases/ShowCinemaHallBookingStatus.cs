@@ -11,7 +11,7 @@ namespace CinemaAppBackend.UseCases
     {
         public void ShowCurrentBookingStatus(CinemaHall cinemaHall)
         {
-            Validate(cinemaHall);
+            Console.WriteLine();
             Console.WriteLine($"Current booking status for cinema hall with {cinemaHall.NoOfRows} rows and {cinemaHall.NoOfSeatsPerRow} seats per row");
             Console.WriteLine();
             var prevRow = 1;
@@ -34,22 +34,6 @@ namespace CinemaAppBackend.UseCases
             Console.ResetColor();
         }
 
-        private void Validate(CinemaHall cinemaHall)
-        {
-            if (cinemaHall == null)
-            {
-                throw new ArgumentNullException(nameof(cinemaHall),
-                    "Cinema hall cannot be null. Kindly initialize cinema hall by selecting option A");
-            }
-
-            if (cinemaHall.NoOfRows == 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(cinemaHall), "No of rows in cinema cannot be 0. Kindly initialize cinema hall by selecting option A");
-            }
-            if (cinemaHall.NoOfSeatsPerRow == 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(cinemaHall), "No of seats in cinema cannot be 0. Kindly initialize cinema hall by selecting option A");
-            }
-        }
+        
     }
 }

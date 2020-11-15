@@ -8,5 +8,7 @@ namespace CinemaAppBackend.Interfaces
     {
         void InitializeCinemaHall(string noOfRows, string noOfSeatsPerRow);
         void ShowCurrentBookingStatus();
+
+        void ReserveCinemaTicket(string rowNumber,string seatNumber);
     }
 }

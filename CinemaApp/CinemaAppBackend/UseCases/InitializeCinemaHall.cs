@@ -18,19 +18,5 @@ namespace CinemaAppBackend.UseCases
                 }
             }
         }
-
-        public bool ValidateCinemaHallDimensions(string noOfRows, string noOfSeatsPerRows)
-        {
-            if (!int.TryParse(noOfRows, out _))
-            {
-                throw new ArgumentOutOfRangeException(nameof(noOfRows), $"Invalid no of number of rows “{noOfRows}” entered. Please enter a valid number of number of rows");
-            }
-            if (!int.TryParse(noOfSeatsPerRows, out _))
-            {
-                throw new ArgumentOutOfRangeException(nameof(noOfSeatsPerRows), $"Invalid no of seats “{noOfSeatsPerRows}” entered. Please enter a valid number of seats");
-            }
-
-            return true;
-        }
     }
 }

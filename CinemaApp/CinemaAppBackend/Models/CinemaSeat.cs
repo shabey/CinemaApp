@@ -17,5 +17,12 @@ namespace CinemaAppBackend.Models
             this.BookingStatus = Constants.BookingStatus.Available;
             this.TicketPrice =  this.GetTicketPrice(totalCapacity);
         }
+
+        public CinemaSeat(int seatNumber, int totalCapacity,Constants.BookingStatus bookingStatus)
+        {
+            this.SeatNumber = seatNumber;
+            this.BookingStatus = bookingStatus;
+            this.TicketPrice = this.GetTicketPrice(totalCapacity);
+        }
     }
 }

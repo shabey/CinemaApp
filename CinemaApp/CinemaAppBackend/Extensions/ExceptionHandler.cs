@@ -11,7 +11,7 @@ namespace CinemaAppBackend.Extensions
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"{errorMessage}{Environment.NewLine}{ex.Message}");
             Console.ResetColor();
-            Console.WriteLine("Press any key to go back !!!");
+            Console.WriteLine("Press any key to go back to main menu !!!");
             Console.ReadLine();
             
         }
