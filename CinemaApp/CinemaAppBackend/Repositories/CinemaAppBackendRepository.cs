@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using CinemaAppBackend.Interfaces;
 using CinemaAppBackend.Models;
 using CinemaAppBackend.UseCases;
+using Serilog;
 
 namespace CinemaAppBackend.Repositories
 {
@@ -12,10 +14,10 @@ namespace CinemaAppBackend.Repositories
         private CinemaHall _cinemaHall;
         private readonly IInitializeCinemaHall _initializeCinemaHall;
         private readonly IShowCinemaHallBookingStatus _showCinemaHallBookingStatus;
-        public CinemaAppBackendRepository()
+        public CinemaAppBackendRepository(IInitializeCinemaHall initializeCinemaHall,IShowCinemaHallBookingStatus showCinemaHallBookingStatus)
         {
-            _initializeCinemaHall = new InitializeCinemaHall();
-            _showCinemaHallBookingStatus = new ShowCinemaHallBookingStatus();
+            _initializeCinemaHall = initializeCinemaHall;
+            _showCinemaHallBookingStatus = showCinemaHallBookingStatus;
             _cinemaHall = new CinemaHall();
         }
 
@@ -32,7 +34,7 @@ namespace CinemaAppBackend.Repositories
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Log.Logger.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - Error Initializing Cinema Hall {e.Message}");
                 throw;
             }
 
@@ -49,7 +51,7 @@ namespace CinemaAppBackend.Repositories
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Log.Logger.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - Error Showing Current Booking Status for Cinema Hall {e.Message}");
                 throw;
             }
 

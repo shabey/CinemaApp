@@ -1,24 +1,52 @@
 ﻿using System;
-using System.Reflection;
-using CinemaApp.Extensions;
+using System.ComponentModel.Design;
+using System.Diagnostics;
+using CinemaAppBackend;
+using CinemaAppBackend.Extensions;
 using CinemaAppBackend.Interfaces;
 using CinemaAppBackend.Repositories;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 
 namespace CinemaApp
 {
     public class Program
     {
+
         private static ConsoleKeyInfo _choice;
         private static ICinemaAppBackendRepository _cinemaAppBackendRepository;
+        private static IServiceProvider _serviceProvider;
         public static void Main(string[] args)
         {
-            _cinemaAppBackendRepository = new CinemaAppBackendRepository();
-            while (ShowOptionsMenu())
-            {
+            Setup();
 
+            try
+            {
+                Log.Information($"Starting cinema hall backend app for {typeof(Program)}");
+                _cinemaAppBackendRepository = _serviceProvider.GetService<ICinemaAppBackendRepository>();
+
+                while (ShowOptionsMenu())
+                {
+
+                }
             }
-           
+            catch (Exception ex)
+            {
+                Log.Fatal($"Program terminated unexpectedly with exception: {ex}\n{ex.StackTrace}");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
+
         }
+
+
+
 
         private static bool ShowOptionsMenu()
         {
@@ -93,5 +121,44 @@ namespace CinemaApp
             }
 
         }
+
+        private static void Setup()
+        {
+            IConfiguration configuration = new ConfigurationBuilder()
+                .Build();
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File("CinemaApp.log")
+                .CreateLogger();
+
+            var serviceCollection = new ServiceCollection();
+            ConfigureServices(serviceCollection, configuration);
+
+           _serviceProvider = serviceCollection.BuildServiceProvider();
+
+            Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
+        }
+
+        private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddLogging(configure => configure.AddSerilog());
+
+            if (configuration["LOG_LEVEL"] == "true")
+            {
+                services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Trace);
+            }
+            else
+            {
+                services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Error);
+            }
+
+            var useCaseConfiguration = new UseCaseConfiguration().
+                BuildCinemaHallInitializationService().
+                BuildShowCinemaHallBookingStatusService();
+            services.AddServices(useCaseConfiguration);
+            
+        }
     }
+
+
 }

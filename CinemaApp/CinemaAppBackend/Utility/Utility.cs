@@ -31,14 +31,6 @@ namespace CinemaAppBackend.Utility
             return new Tuple<int, int>(row, col);
         }
 
-        public static float GetTicketPrice(int seatNumber, int totalCapacity = 50)
-        {
-            if (totalCapacity > 50 && seatNumber > (totalCapacity / 2))
-            {
-                return 12.0f;
-            }
-
-            return 10.0f;
-        }
+        
     }
 }

@@ -20,15 +20,18 @@ namespace CinemaAppBackend.UseCases
                 var seatNumber = Utility.Utility.ConvertFromIndex(seat.SeatNumber, cinemaHall.NoOfSeatsPerRow);
                 var rowNumber = seatNumber.Item1 + 1;
                 var seatNo = seatNumber.Item2 + 1;
-                if (prevRow != rowNumber)
+                if (prevRow != rowNumber) // logic for adding seperator after¨row ends
                 {
                     Console.WriteLine();
                     prevRow = rowNumber;
                 }
 
+                Console.ForegroundColor = seat.BookingStatus == Constants.BookingStatus.Reserved ? ConsoleColor.Red : ConsoleColor.Green;
+
                 Console.WriteLine($"Row: {rowNumber} Seat: {seatNo} -> Status: {seat.BookingStatus}");
 
             }
+            Console.ResetColor();
         }
 
         private void Validate(CinemaHall cinemaHall)
