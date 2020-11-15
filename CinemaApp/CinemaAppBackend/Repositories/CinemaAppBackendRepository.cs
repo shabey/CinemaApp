@@ -7,29 +7,52 @@ using CinemaAppBackend.UseCases;
 
 namespace CinemaAppBackend.Repositories
 {
-    public class CinemaAppBackendRepository:ICinemaAppBackendRepository
+    public class CinemaAppBackendRepository : ICinemaAppBackendRepository
     {
-        private readonly CinemaHall _cinemaHall;
+        private CinemaHall _cinemaHall;
         private readonly IInitializeCinemaHall _initializeCinemaHall;
-        private readonly ICinemaHallBookingStatus _cinemaHallBookingStatus;
+        private readonly IShowCinemaHallBookingStatus _showCinemaHallBookingStatus;
         public CinemaAppBackendRepository()
         {
             _initializeCinemaHall = new InitializeCinemaHall();
-            _cinemaHallBookingStatus = new CinemaHallBookingStatus();
+            _showCinemaHallBookingStatus = new ShowCinemaHallBookingStatus();
             _cinemaHall = new CinemaHall();
         }
 
-        public void Initialize(string noOfRows, string noOfSeats)
+        public void InitializeCinemaHall(string noOfRows, string noOfSeatsPerRow)
         {
-            _cinemaHall.CinemaRoom = _initializeCinemaHall.Initialize(noOfRows,noOfSeats);
+            try
+            {
+
+                if (_initializeCinemaHall.ValidateCinemaHallDimensions(noOfRows, noOfSeatsPerRow))
+                {
+                    _cinemaHall = new CinemaHall(_initializeCinemaHall, int.Parse(noOfRows),
+                        int.Parse(noOfSeatsPerRow));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
         }
 
         public void ShowCurrentBookingStatus()
         {
-           _cinemaHallBookingStatus.ShowCurrentBookingStatus(_cinemaHall.CinemaRoom);
-           Console.WriteLine();
-           Console.WriteLine("Press any key to go back !!!");
-           Console.ReadLine();
+            try
+            {
+                _showCinemaHallBookingStatus.ShowCurrentBookingStatus(_cinemaHall);
+                Console.WriteLine();
+                Console.WriteLine("Press any key to go back !!!");
+                Console.ReadLine();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
         }
     }
 }

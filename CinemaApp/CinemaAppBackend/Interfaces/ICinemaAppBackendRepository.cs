@@ -6,7 +6,7 @@ namespace CinemaAppBackend.Interfaces
 {
     public interface ICinemaAppBackendRepository
     {
-        void Initialize(string noOfRows, string noOfSeats);
+        void InitializeCinemaHall(string noOfRows, string noOfSeatsPerRow);
         void ShowCurrentBookingStatus();
     }
 }

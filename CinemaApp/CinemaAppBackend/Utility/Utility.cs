@@ -15,8 +15,8 @@ namespace CinemaAppBackend.Utility
         /// <returns></returns>
         public static int ConvertToIndex(int row, int col, int noOfColumns)
         {
-            var index = ((row * noOfColumns) + col);
-            return (index % noOfColumns) + 1;
+            return ((row * noOfColumns) + col);
+            //return (index % noOfColumns) + 1;
         }
         /// <summary>
         /// Converts index of an array to corresponding row and col
@@ -29,6 +29,16 @@ namespace CinemaAppBackend.Utility
             var row = index / noOfColumns;
             var col = index % noOfColumns;
             return new Tuple<int, int>(row, col);
+        }
+
+        public static float GetTicketPrice(int seatNumber, int totalCapacity = 50)
+        {
+            if (totalCapacity > 50 && seatNumber > (totalCapacity / 2))
+            {
+                return 12.0f;
+            }
+
+            return 10.0f;
         }
     }
 }

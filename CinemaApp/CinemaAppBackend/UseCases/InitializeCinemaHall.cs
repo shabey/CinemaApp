@@ -2,42 +2,35 @@
 using System.Collections.Generic;
 using System.Text;
 using CinemaAppBackend.Interfaces;
+using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.UseCases
 {
     public class InitializeCinemaHall : IInitializeCinemaHall
     {
-        public int[][] Initialize(string rows, string seats)
+        public void InitializeCinemaHallSeats(CinemaHall cinemaHall)
         {
-            Validate(rows, seats); //Call validation
-            
-            var noOfRows = int.Parse(rows); 
-            var noOfSeats = int.Parse(seats);
-
-            var cinemaRoom = new int[noOfRows][];
-
-            for (var row = 0; row < noOfRows; row++)
+            for (var row = 0; row < cinemaHall.NoOfRows; row++)
             {
-                cinemaRoom[row] = new int[noOfSeats]; // initialize no of seats per row
-                for (var col = 0; col < cinemaRoom[row].Length; col++)
+                for (var col = 0; col < cinemaHall.NoOfSeatsPerRow; col++)
                 {
-                    cinemaRoom[row][col] = (int)Constants.BookingStatus.Available; // make all seats available for booking
+                    cinemaHall.Seats.Add(new CinemaSeat(row,col,cinemaHall.NoOfSeatsPerRow,cinemaHall.Capacity));
                 }
             }
-
-            return cinemaRoom;
         }
 
-        private void Validate(string noOfRows, string noOfSeats)
+        public bool ValidateCinemaHallDimensions(string noOfRows, string noOfSeatsPerRows)
         {
             if (!int.TryParse(noOfRows, out _))
             {
                 throw new ArgumentOutOfRangeException(nameof(noOfRows), $"Invalid no of number of rows “{noOfRows}” entered. Please enter a valid number of number of rows");
             }
-            if (!int.TryParse(noOfSeats, out _))
+            if (!int.TryParse(noOfSeatsPerRows, out _))
             {
-                throw new ArgumentOutOfRangeException(nameof(noOfSeats), $"Invalid no of seats “{noOfSeats}” entered. Please enter a valid number of seats");
+                throw new ArgumentOutOfRangeException(nameof(noOfSeatsPerRows), $"Invalid no of seats “{noOfSeatsPerRows}” entered. Please enter a valid number of seats");
             }
+
+            return true;
         }
     }
 }

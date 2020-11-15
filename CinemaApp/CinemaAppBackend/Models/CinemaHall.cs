@@ -1,18 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CinemaAppBackend.Interfaces;
 
 namespace CinemaAppBackend.Models
 {
     public class CinemaHall
     {
-        public int[][] CinemaRoom { get; set; }
+        public int NoOfRows { get; set; }
+        public int NoOfSeatsPerRow { get; set; }
+        public int Capacity => this.NoOfRows * this.NoOfSeatsPerRow;
         public List<CinemaSeat> Seats { get; set; }
 
-        public CinemaHall()
+        public CinemaHall(int noOfRows=0,int noOfSeatsPerRow = 0)
         {
-            CinemaRoom = new int[0][];
-            Seats = new List<CinemaSeat>();
+            this.NoOfRows = noOfRows;
+            this.NoOfSeatsPerRow = noOfSeatsPerRow;
+            Seats = new List<CinemaSeat>(Capacity);
+        }
+
+        public CinemaHall(IInitializeCinemaHall initializeCinemaHall,int noOfRows, int noOfSeatsPerRow):this(noOfRows,noOfSeatsPerRow)
+        {
+            initializeCinemaHall.InitializeCinemaHallSeats(this);
         }
     }
 }

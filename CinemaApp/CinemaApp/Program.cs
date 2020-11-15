@@ -71,7 +71,7 @@ namespace CinemaApp
                 var noOfSeats = Console.ReadLine();
                 Console.WriteLine();
                 Console.Clear();
-                _cinemaAppBackendRepository.Initialize(noOfRows, noOfSeats);
+                _cinemaAppBackendRepository.InitializeCinemaHall(noOfRows, noOfSeats);
                 _cinemaAppBackendRepository.ShowCurrentBookingStatus();
             }
             catch (Exception e)
