@@ -5,8 +5,9 @@ using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.Interfaces
 {
-    public interface IShowCinemaHallBookingStatus
+    public interface IGenerateCinemaHallStatistics
     {
-        void ShowCurrentBookingStatus(CinemaHall cinemaHall);
+        CinemaHallStatistics GetCinemaHallStatistics(CinemaHall cinemaHall);
+
     }
 }

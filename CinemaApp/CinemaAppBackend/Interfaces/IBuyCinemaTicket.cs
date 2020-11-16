@@ -5,9 +5,9 @@ using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.Interfaces
 {
-    public interface IReserveCinemaTicket
+    public interface IBuyCinemaTicket
     {
         bool IsSeatAvailableForReservation(CinemaHall cinemaHall, int seatNumber);
-        void ReserveTicket(CinemaHall cinemaHall, int seatNumber);
+        void BuyTicket(CinemaHall cinemaHall, int seatNumber);
     }
 }

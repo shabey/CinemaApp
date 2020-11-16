@@ -4,9 +4,9 @@ using System.Text;
 
 namespace CinemaAppBackend.Extensions
 {
-    public static class ExceptionHandler
+    public static class ExceptionExtension
     {
-        public static void HandleError(this Exception ex, string errorMessage)
+        public static void HandleException(this Exception ex, string errorMessage)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"{errorMessage}{Environment.NewLine}{ex.Message}");

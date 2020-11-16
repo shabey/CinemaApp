@@ -6,6 +6,7 @@ using CinemaAppBackend;
 using CinemaAppBackend.Extensions;
 using CinemaAppBackend.Interfaces;
 using CinemaAppBackend.Repositories;
+using CinemaAppBackend.Utility;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -80,11 +81,15 @@ namespace CinemaApp
                         break;
                     }
                 case "D":
-                    return true;
+                    {
+                        GenerateCinemaHallStatistics();
+                        break;
+                    }
                 case "E":
-                    return false;
-                default:
-                    return true;
+                    {
+                        ExitMenu();
+                        return false;
+                    }
             }
 
             return true;
@@ -108,7 +113,7 @@ namespace CinemaApp
             }
             catch (Exception e)
             {
-                e.HandleError("Error initializing cinema hall");
+                e.HandleException("Error initializing cinema hall");
             }
 
         }
@@ -117,14 +122,14 @@ namespace CinemaApp
             try
             {
                 Console.Clear();
-                _cinemaAppBackendRepository.ShowCurrentBookingStatus();
+                _cinemaAppBackendRepository.ShowCinemaHallCurrentStatus();
                 Console.WriteLine();
                 Console.WriteLine("Press any key to go back to main menu !!!");
                 Console.ReadLine();
             }
             catch (Exception e)
             {
-                e.HandleError("Error showing current booking status for cinema hall");
+                e.HandleException("Error showing current booking status for cinema hall");
             }
 
         }
@@ -132,11 +137,10 @@ namespace CinemaApp
         {
             try
             {
-                ConsoleKeyInfo reserveAnotherSeat;
                 do
                 {
                     Console.Clear();
-                    _cinemaAppBackendRepository.ShowCurrentBookingStatus();
+                    _cinemaAppBackendRepository.ShowCinemaHallCurrentStatus();
                     Console.WriteLine();
                     Console.WriteLine("Enter “seat number” for ticket reservation");
                     Console.WriteLine();
@@ -146,21 +150,53 @@ namespace CinemaApp
                     var seatNumber = Console.ReadLine();
                     Console.WriteLine();
                     Console.Clear();
-                    _cinemaAppBackendRepository.ReserveCinemaTicket(rowNumber, seatNumber);
+                    _cinemaAppBackendRepository.BuyCinemaTicket(rowNumber, seatNumber);
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine(
                         $"Thank you for your reservation. Your seat is reserved at row {rowNumber} and seat number {seatNumber}");
                     Console.ResetColor();
-                    _cinemaAppBackendRepository.ShowCurrentBookingStatus();
+                    _cinemaAppBackendRepository.ShowCinemaHallCurrentStatus();
                     Console.WriteLine();
-                    Console.Write("Do you want to reserve another seat? (Y/N): ");
-                    reserveAnotherSeat = Console.ReadKey(false); // show the key as you read it   
-                } while (reserveAnotherSeat.KeyChar.ToString().ToUpper() != "N");
+                } while (Utility.Confirm("Do you want to reserve another seat?"));
             }
             catch (Exception e)
             {
-                e.HandleError($"Error reserving ticket");
+                e.HandleException($"Error reserving ticket");
             }
+        }
+        private static void GenerateCinemaHallStatistics()
+        {
+            try
+            {
+                Console.Clear();
+                _cinemaAppBackendRepository.ShowCinemaHallCurrentStatus();
+                Console.WriteLine();
+                _cinemaAppBackendRepository.GenerateCinemaHallStatistics();
+                Console.WriteLine();
+                Console.WriteLine("Press any key to go back to main menu !!!");
+                Console.ReadLine();
+            }
+            catch (Exception e)
+            {
+                e.HandleException("Error showing current booking status for cinema hall");
+            }
+
+        }
+        private static void ExitMenu()
+        {
+            try
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Thank you for using the cinema hall app. Press any key to exit !!!");
+                Console.ReadLine();
+                Console.ResetColor();
+            }
+            catch (Exception e)
+            {
+                e.HandleException("Error showing current booking status for cinema hall");
+            }
+
         }
         private static void Setup()
         {
@@ -196,7 +232,8 @@ namespace CinemaApp
                 BuildCinemaHallValidationService().
                 BuildCinemaHallInitializationService().
                 BuildShowCinemaHallBookingStatusService().
-                BuildCinemaTicketReservationService();
+                BuildCinemaTicketReservationService().
+                BuildCinemaHallStatisticsGenerationService();
 
 
             services.AddServices(useCaseConfiguration);

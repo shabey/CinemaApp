@@ -16,7 +16,6 @@ namespace CinemaAppBackend.Utility
         public static int ConvertToIndex(int row, int col, int noOfColumns)
         {
             return ((row * noOfColumns) + col);
-            //return (index % noOfColumns) + 1;
         }
         /// <summary>
         /// Converts index of an array to corresponding row and col
@@ -31,6 +30,20 @@ namespace CinemaAppBackend.Utility
             return new Tuple<int, int>(row, col);
         }
 
-        
+        public static bool Confirm(string title)
+        {
+            ConsoleKey response;
+            do
+            {
+                Console.Write($"{ title } [y/n] ");
+                response = Console.ReadKey(false).Key;
+                if (response != ConsoleKey.Enter)
+                {
+                    Console.WriteLine();
+                }
+            } while (response != ConsoleKey.Y && response != ConsoleKey.N);
+
+            return (response == ConsoleKey.Y);
+        }
     }
 }

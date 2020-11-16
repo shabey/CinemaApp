@@ -7,8 +7,10 @@ namespace CinemaAppBackend.Interfaces
     public interface ICinemaAppBackendRepository
     {
         void InitializeCinemaHall(string noOfRows, string noOfSeatsPerRow);
-        void ShowCurrentBookingStatus();
+        void ShowCinemaHallCurrentStatus();
 
-        void ReserveCinemaTicket(string rowNumber,string seatNumber);
+        void BuyCinemaTicket(string rowNumber,string seatNumber);
+
+        void GenerateCinemaHallStatistics();
     }
 }

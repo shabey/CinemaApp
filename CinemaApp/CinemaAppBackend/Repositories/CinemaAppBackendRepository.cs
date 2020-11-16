@@ -13,15 +13,17 @@ namespace CinemaAppBackend.Repositories
     {
         private CinemaHall _cinemaHall;
         private readonly IInitializeCinemaHall _initializeCinemaHall;
-        private readonly IShowCinemaHallBookingStatus _showCinemaHallBookingStatus;
-        private readonly IReserveCinemaTicket _reserveCinemaTicket;
+        private readonly IShowCinemaHallCurrentStatus _showCinemaHallCurrentStatus;
+        private readonly IBuyCinemaTicket _buyCinemaTicket;
         private readonly ICinemaHallValidationService _cinemaHallValidationService;
-        public CinemaAppBackendRepository(IInitializeCinemaHall initializeCinemaHall,IShowCinemaHallBookingStatus showCinemaHallBookingStatus,IReserveCinemaTicket reserveCinemaTicket,ICinemaHallValidationService cinemaHallValidationService)
+        private readonly IGenerateCinemaHallStatistics _generateCinemaHallStatistics;
+        public CinemaAppBackendRepository(IInitializeCinemaHall initializeCinemaHall,IShowCinemaHallCurrentStatus showCinemaHallCurrentStatus,IBuyCinemaTicket buyCinemaTicket,IGenerateCinemaHallStatistics generateCinemaHallStatistics, ICinemaHallValidationService cinemaHallValidationService)
         {
             _initializeCinemaHall = initializeCinemaHall;
-            _showCinemaHallBookingStatus = showCinemaHallBookingStatus;
-            _reserveCinemaTicket = reserveCinemaTicket;
+            _showCinemaHallCurrentStatus = showCinemaHallCurrentStatus;
+            _buyCinemaTicket = buyCinemaTicket;
             _cinemaHallValidationService = cinemaHallValidationService;
+            _generateCinemaHallStatistics = generateCinemaHallStatistics;
             _cinemaHall = new CinemaHall();
         }
 
@@ -44,23 +46,23 @@ namespace CinemaAppBackend.Repositories
 
         }
 
-        public void ShowCurrentBookingStatus()
+        public void ShowCinemaHallCurrentStatus()
         {
             try
             {
                 if (_cinemaHallValidationService.ValidateCinemaHall(this._cinemaHall))
                 {
-                    _showCinemaHallBookingStatus.ShowCurrentBookingStatus(this._cinemaHall);
+                    _showCinemaHallCurrentStatus.ShowCurrentBookingStatus(this._cinemaHall);
                 }
             }
             catch (Exception e)
             {
-                Log.Logger.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - Error Showing Current Booking Status for Cinema Hall {e.Message}");
+                Log.Logger.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - Error Showing Current Status for Cinema Hall {e.Message}");
                 throw;
             }
 
         }
-        public void ReserveCinemaTicket(string rowNumber, string seatNumber)
+        public void BuyCinemaTicket(string rowNumber, string seatNumber)
         {
             try
             {
@@ -69,19 +71,41 @@ namespace CinemaAppBackend.Repositories
                     var seat =
                         Utility.Utility.ConvertToIndex(int.Parse(rowNumber)-1, int.Parse(seatNumber)-1, this._cinemaHall.NoOfSeatsPerRow);
 
-                    if (!_reserveCinemaTicket.IsSeatAvailableForReservation(this._cinemaHall, seat))
+                    if (!_buyCinemaTicket.IsSeatAvailableForReservation(this._cinemaHall, seat))
                     {
                         throw new Exception($"Seat reservation failed!!! seat: {seatNumber}  in row: {rowNumber} is already reserved.");
                     }
-                    _reserveCinemaTicket.ReserveTicket(this._cinemaHall, seat);
+                    _buyCinemaTicket.BuyTicket(this._cinemaHall, seat);
                 }
             }
             catch (Exception e)
             {
-                Log.Logger.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - Error Reserving Cinema Ticket {e.Message}");
+                Log.Logger.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - Error Buying Cinema Ticket {e.Message}");
                 throw;
             }
 
+        }
+
+        public void GenerateCinemaHallStatistics()
+        {
+            try
+            {
+                if (this._cinemaHall == null)
+                {
+                    throw new ArgumentNullException("Cinema hall",
+                        "Cinema hall cannot be null. Kindly initialize cinema hall by selecting option A");
+                }
+                var cinemaHallStatistics = _generateCinemaHallStatistics.GetCinemaHallStatistics(this._cinemaHall);
+                if (cinemaHallStatistics!=null)
+                {
+                    Console.WriteLine(cinemaHallStatistics.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Logger.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - Error Generating Statistics for Cinema Hall {e.Message}");
+                throw;
+            }
         }
     }
 }
