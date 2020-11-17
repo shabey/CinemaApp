@@ -9,7 +9,7 @@ using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.UseCases
 {
-    public class BuyCinemaTicket:IBuyCinemaTicket
+    internal class BuyCinemaTicket:IBuyCinemaTicket
     {
         public bool IsSeatAvailableForReservation(CinemaHall cinemaHall,int seatNumber)
         {

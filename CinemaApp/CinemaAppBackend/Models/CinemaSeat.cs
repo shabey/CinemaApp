@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CinemaAppBackend.Models
 {
-    public class CinemaSeat
+    internal class CinemaSeat
     {
         public int SeatNumber { get; set; }
         public Constants.BookingStatus BookingStatus { get; set; }

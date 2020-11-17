@@ -5,7 +5,7 @@ using CinemaAppBackend.Interfaces;
 
 namespace CinemaAppBackend.Models
 {
-    public class CinemaHall
+    internal class CinemaHall
     {
         public int NoOfRows { get; set; }
         public int NoOfSeatsPerRow { get; set; }
@@ -17,11 +17,6 @@ namespace CinemaAppBackend.Models
             this.NoOfRows = noOfRows;
             this.NoOfSeatsPerRow = noOfSeatsPerRow;
             Seats = new List<CinemaSeat>(Capacity);
-        }
-
-        public CinemaHall(IInitializeCinemaHall initializeCinemaHall,int noOfRows, int noOfSeatsPerRow):this(noOfRows,noOfSeatsPerRow)
-        {
-            initializeCinemaHall.InitializeCinemaHallSeats(this);
         }
     }
 }

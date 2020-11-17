@@ -1,30 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Reflection;
 using System.Text;
 using CinemaAppBackend.Interfaces;
 using CinemaAppBackend.Models;
+using CinemaAppBackend.Services;
 using CinemaAppBackend.UseCases;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
 namespace CinemaAppBackend.Repositories
 {
     public class CinemaAppBackendRepository : ICinemaAppBackendRepository
     {
+        
         private CinemaHall _cinemaHall;
         private readonly IInitializeCinemaHall _initializeCinemaHall;
         private readonly IShowCinemaHallCurrentStatus _showCinemaHallCurrentStatus;
         private readonly IBuyCinemaTicket _buyCinemaTicket;
         private readonly ICinemaHallValidationService _cinemaHallValidationService;
         private readonly IGenerateCinemaHallStatistics _generateCinemaHallStatistics;
-        public CinemaAppBackendRepository(IInitializeCinemaHall initializeCinemaHall,IShowCinemaHallCurrentStatus showCinemaHallCurrentStatus,IBuyCinemaTicket buyCinemaTicket,IGenerateCinemaHallStatistics generateCinemaHallStatistics, ICinemaHallValidationService cinemaHallValidationService)
+
+        public CinemaAppBackendRepository(IServiceProvider serviceProvider)
         {
-            _initializeCinemaHall = initializeCinemaHall;
-            _showCinemaHallCurrentStatus = showCinemaHallCurrentStatus;
-            _buyCinemaTicket = buyCinemaTicket;
-            _cinemaHallValidationService = cinemaHallValidationService;
-            _generateCinemaHallStatistics = generateCinemaHallStatistics;
-            _cinemaHall = new CinemaHall();
+            this._initializeCinemaHall = serviceProvider.GetService<IInitializeCinemaHall>();
+            this._showCinemaHallCurrentStatus = serviceProvider.GetService<IShowCinemaHallCurrentStatus>();
+            this._buyCinemaTicket = serviceProvider.GetService<IBuyCinemaTicket>();
+            this._cinemaHallValidationService = serviceProvider.GetService<ICinemaHallValidationService>();
+            this._generateCinemaHallStatistics = serviceProvider.GetService<IGenerateCinemaHallStatistics>();
+            this._cinemaHall = new CinemaHall();
         }
 
         public void InitializeCinemaHall(string noOfRows, string noOfSeatsPerRow)
@@ -34,8 +39,9 @@ namespace CinemaAppBackend.Repositories
 
                 if (_cinemaHallValidationService.ValidateCinemaHallDimensions(noOfRows, noOfSeatsPerRow))
                 {
-                    this._cinemaHall = new CinemaHall(_initializeCinemaHall, int.Parse(noOfRows),
-                        int.Parse(noOfSeatsPerRow));
+                    this._cinemaHall = new CinemaHall(int.Parse(noOfRows),int.Parse(noOfSeatsPerRow));
+
+                    this._initializeCinemaHall.InitializeCinemaHallSeats(this._cinemaHall);
                 }
             }
             catch (Exception e)
@@ -92,7 +98,7 @@ namespace CinemaAppBackend.Repositories
             {
                 if (this._cinemaHall == null)
                 {
-                    throw new ArgumentNullException("Cinema hall",
+                    throw new ArgumentNullException($"Cinema hall",
                         "Cinema hall cannot be null. Kindly initialize cinema hall by selecting option A");
                 }
                 var cinemaHallStatistics = _generateCinemaHallStatistics.GetCinemaHallStatistics(this._cinemaHall);

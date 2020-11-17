@@ -5,7 +5,7 @@ using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.Interfaces
 {
-    public interface IInitializeCinemaHall
+    internal interface IInitializeCinemaHall
     {
         void InitializeCinemaHallSeats(CinemaHall cinemaHall);
     }

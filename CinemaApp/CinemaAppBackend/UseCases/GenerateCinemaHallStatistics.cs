@@ -7,7 +7,7 @@ using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.UseCases
 {
-    public class GenerateCinemaHallStatistics:IGenerateCinemaHallStatistics
+    internal class GenerateCinemaHallStatistics:IGenerateCinemaHallStatistics
     {
         public CinemaHallStatistics GetCinemaHallStatistics(CinemaHall cinemaHall)
         {

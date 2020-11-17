@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CinemaAppBackend.Models
 {
-    public class CinemaHallStatistics
+    internal class CinemaHallStatistics
     {
         /*
          * Output metrics for the cinema room, including:

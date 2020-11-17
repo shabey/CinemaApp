@@ -5,7 +5,7 @@ using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.Interfaces
 {
-    public interface IGenerateCinemaHallStatistics
+    internal interface IGenerateCinemaHallStatistics
     {
         CinemaHallStatistics GetCinemaHallStatistics(CinemaHall cinemaHall);
 

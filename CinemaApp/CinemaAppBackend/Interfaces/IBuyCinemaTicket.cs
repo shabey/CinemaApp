@@ -5,7 +5,7 @@ using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.Interfaces
 {
-    public interface IBuyCinemaTicket
+    internal interface IBuyCinemaTicket
     {
         bool IsSeatAvailableForReservation(CinemaHall cinemaHall, int seatNumber);
         void BuyTicket(CinemaHall cinemaHall, int seatNumber);

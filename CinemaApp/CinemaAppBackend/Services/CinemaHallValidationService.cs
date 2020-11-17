@@ -6,15 +6,15 @@ using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.Services
 {
-    public class CinemaHallValidationService:ICinemaHallValidationService
+    internal class CinemaHallValidationService:ICinemaHallValidationService
     {
         public bool ValidateCinemaHallDimensions(string noOfRows, string noOfSeatsPerRows)
         {
-            if (!int.TryParse(noOfRows, out _))
+            if (!int.TryParse(noOfRows, out var row) || row <=0 || row>= int.MaxValue)
             {
                 throw new ArgumentOutOfRangeException(nameof(noOfRows), $"Invalid no of number of rows “{noOfRows}” entered. Please enter a valid number of number of rows");
             }
-            if (!int.TryParse(noOfSeatsPerRows, out _))
+            if (!int.TryParse(noOfSeatsPerRows, out var seat) || seat <= 0 || seat >= int.MaxValue)
             {
                 throw new ArgumentOutOfRangeException(nameof(noOfSeatsPerRows), $"Invalid no of seats “{noOfSeatsPerRows}” entered. Please enter a valid number of seats");
             }

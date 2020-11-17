@@ -6,7 +6,7 @@ using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.UseCases
 {
-    public class InitializeCinemaHall : IInitializeCinemaHall
+    internal class InitializeCinemaHall : IInitializeCinemaHall
     {
         public void InitializeCinemaHallSeats(CinemaHall cinemaHall)
         {

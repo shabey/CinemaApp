@@ -7,7 +7,7 @@ using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.UseCases
 {
-    public class ShowCinemaHallCurrentStatus : IShowCinemaHallCurrentStatus
+    internal class ShowCinemaHallCurrentStatus : IShowCinemaHallCurrentStatus
     {
         public void ShowCurrentBookingStatus(CinemaHall cinemaHall)
         {
