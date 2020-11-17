@@ -1,5 +1,4 @@
 # Background
-
 The owners of a Cinema theater have contracted you to develop the backend of a new app, targeted both customers and internal staff. The app should include several features for a given cinema room.
 
 When developing the application, the clients is especially interested in ensuring the following:
@@ -9,8 +8,6 @@ Not all users are expected to be IT experts. Therefore, make sure that invalid i
 Not all seats are equal! If the capacity is over 50 people, the front half rows cost $12, the back half cost $10. If capacity 50 or below, all cost $10
 
 # Features
-
-
 Build a console application in Java or C#, that implements the following features:
 
 Receive inputs for “number of rows” and “number of seats per row” for the given cinema room.
@@ -25,7 +22,6 @@ Potential total income (sum of all available and reserved tickets)
 When the application starts up, the user should be able to choose which action to take. Only upon actively choosing to stop the app, should the application end the runtime.
 
 # Solution design 
-
 The solution is divided into 3 projects
 
 # 1. CinemaApp 
@@ -57,21 +53,24 @@ After calculation the object is returned to display the statistics.
 
 Option E: Exist from cinema hall console App.
 
-Services:
-CinemaHallValidationService : Contains different types of validations required by Cinema App to validate data.
-ValidateCinemaHallDimensions: Validates if user has entered valid dimensions for cinema hall i.e “number of rows” and “number of seats per row”
-ValidateCinemaHall: Validates if cinema hall object is not null and if “number of rows” and “number of seats per row” are not zero.
-ValidateSeatReservation: Validates if the row number and seat number entered by user fir buying ticket is valid.
+# CinemaHallValidationService: Contains different types of validations required by Cinema App to validate data
+1. ValidateCinemaHallDimensions: Validates if user has entered valid dimensions for cinema hall i.e “number of rows” and “number of seats per row”</li>
+2. ValidateCinemaHall: Validates if cinema hall object is not null and if “number of rows” and “number of seats per row” are not zero.</li>
+3. ValidateSeatReservation: Validates if the row number and seat number entered by user fir buying ticket is valid.
 
-Models:
-1. Cinema Hall: Has properties like “number of rows” and “number of seats per row” and initializes cinema seat collection based on this input.
-2. Cinema Seat: Has properties like Seat number, ticket price based on seat number and booking status for the seat (Available/Reserved)
-3. Cinema Hall Statistics: Calculates different statistics based on current situation of cinema hall. the following things are calculated for now
-   3.1 Number of purchased tickets
-   3.2 Percentage occupied
-   3.3 Current income (sum of reserved tickets)
-   3.4 Potential total income (sum of all available and reserved tickets)
+# Models:
+1. Cinema Hall: Has properties like “number of rows” and “number of seats per row” and initializes cinema seat collection based on this input.</li>
+2. Cinema Seat: Has properties like Seat number, ticket price based on seat number and booking status for the seat (Available/Reserved)</li>
+3. Cinema Hall Statistics: Calculates different statistics based on current situation of cinema hall. the following things are calculated for now 
+<ul>
+   <li>Number of purchased tickets</li>
+   <li>Percentage occupied</li>
+   <li>Current income (sum of reserved tickets)</li>
+   <li>Potential total income (sum of all available and reserved tickets)</li>
+</ul>
 
-# 3. CinemaAppBackendUnitTest is a .Net core NUnit test project responsible for testing functions and services provided by CinemaAppBackend
+# 3. CinemaAppBackendUnitTest 
+The project is a .Net core NUnit test project responsible for testing functions and services provided by CinemaAppBackend.
 
-# Tools and Technologies: .Net Core 3.0, C#, Serilog, Dependency injection, NUnit, Moq 
+# Tools and Technologies: 
+.Net Core 3.0, C#, Serilog, Dependency injection, NUnit, Moq 
