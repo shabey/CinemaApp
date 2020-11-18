@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.Interfaces
 {
     public interface ICinemaAppBackendRepository
     {
-        void InitializeCinemaHall(string noOfRows, string noOfSeatsPerRow);
+        CinemaHall InitializeCinemaHall(string noOfRows, string noOfSeatsPerRow);
         void ShowCinemaHallCurrentStatus();
 
-        void BuyCinemaTicket(string rowNumber,string seatNumber);
+        CinemaHall BuyCinemaTicket(string rowNumber,string seatNumber);
 
-        void GenerateCinemaHallStatistics();
+        CinemaHallStatistics GenerateCinemaHallStatistics();
     }
 }

@@ -13,7 +13,11 @@ namespace CinemaApp.Controllers
                 Console.Clear();
                 cinemaAppBackendRepository.ShowCinemaHallCurrentStatus();
                 Console.WriteLine();
-                cinemaAppBackendRepository.GenerateCinemaHallStatistics();
+                var cinemaHallStatistics = cinemaAppBackendRepository.GenerateCinemaHallStatistics();
+                if (cinemaHallStatistics != null)
+                {
+                    Console.WriteLine(cinemaHallStatistics.ToString());
+                }
                 Console.WriteLine();
                 Console.WriteLine("Press any key to go back to main menu !!!");
                 Console.ReadLine();

@@ -14,7 +14,7 @@ namespace CinemaAppBackend.UseCases
             {
                 for (var col = 0; col < cinemaHall.NoOfSeatsPerRow; col++)
                 {
-                    cinemaHall.Seats.Add(new CinemaSeat(row,col,cinemaHall.NoOfSeatsPerRow,cinemaHall.Capacity));
+                    cinemaHall.Seats.Add(new CinemaSeat(row,col,cinemaHall.NoOfSeatsPerRow,cinemaHall.TotalCapacity));
                 }
             }
         }

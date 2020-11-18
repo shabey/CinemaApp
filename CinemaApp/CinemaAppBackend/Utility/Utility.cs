@@ -7,7 +7,8 @@ namespace CinemaAppBackend.Utility
     public static class Utility
     {
         /// <summary>
-        /// Converts 2D row and col into 1D -> index
+        /// Convert row and col into appropriate index
+        /// Converts 2D -> 1D
         /// </summary>
         /// <param name="row"></param>
         /// <param name="col"></param>
@@ -18,7 +19,8 @@ namespace CinemaAppBackend.Utility
             return ((row * noOfColumns) + col);
         }
         /// <summary>
-        /// Converts index of an array to corresponding row and col
+        /// Converts index of an array to corresponding row and col 
+        /// Convert from 1D array -> 2D
         /// </summary>
         /// <param name="index"></param>
         /// <param name="noOfColumns"></param>

@@ -18,7 +18,7 @@ namespace CinemaAppBackend.Repositories
         private CinemaHall _cinemaHall;
         private readonly IInitializeCinemaHall _initializeCinemaHall;
         private readonly IShowCinemaHallCurrentStatus _showCinemaHallCurrentStatus;
-        private readonly IBuyCinemaTicket _buyCinemaTicket;
+        private readonly IBuyCinemaHallTicket _buyCinemaHallTicket;
         private readonly ICinemaHallValidationService _cinemaHallValidationService;
         private readonly IGenerateCinemaHallStatistics _generateCinemaHallStatistics;
 
@@ -26,13 +26,13 @@ namespace CinemaAppBackend.Repositories
         {
             this._initializeCinemaHall = serviceProvider.GetService<IInitializeCinemaHall>();
             this._showCinemaHallCurrentStatus = serviceProvider.GetService<IShowCinemaHallCurrentStatus>();
-            this._buyCinemaTicket = serviceProvider.GetService<IBuyCinemaTicket>();
+            this._buyCinemaHallTicket = serviceProvider.GetService<IBuyCinemaHallTicket>();
             this._cinemaHallValidationService = serviceProvider.GetService<ICinemaHallValidationService>();
             this._generateCinemaHallStatistics = serviceProvider.GetService<IGenerateCinemaHallStatistics>();
             this._cinemaHall = new CinemaHall();
         }
 
-        public void InitializeCinemaHall(string noOfRows, string noOfSeatsPerRow)
+        public CinemaHall InitializeCinemaHall(string noOfRows, string noOfSeatsPerRow)
         {
             try
             {
@@ -50,6 +50,7 @@ namespace CinemaAppBackend.Repositories
                 throw;
             }
 
+            return this._cinemaHall;
         }
 
         public void ShowCinemaHallCurrentStatus()
@@ -68,7 +69,7 @@ namespace CinemaAppBackend.Repositories
             }
 
         }
-        public void BuyCinemaTicket(string rowNumber, string seatNumber)
+        public CinemaHall BuyCinemaTicket(string rowNumber, string seatNumber)
         {
             try
             {
@@ -77,11 +78,11 @@ namespace CinemaAppBackend.Repositories
                     var seat =
                         Utility.Utility.ConvertToIndex(int.Parse(rowNumber)-1, int.Parse(seatNumber)-1, this._cinemaHall.NoOfSeatsPerRow);
 
-                    if (!_buyCinemaTicket.IsSeatAvailableForReservation(this._cinemaHall, seat))
+                    if (!_buyCinemaHallTicket.IsSeatAvailableForReservation(this._cinemaHall, seat))
                     {
                         throw new Exception($"Seat reservation failed!!! seat: {seatNumber}  in row: {rowNumber} is already reserved.");
                     }
-                    _buyCinemaTicket.BuyTicket(this._cinemaHall, seat);
+                    _buyCinemaHallTicket.BuyTicket(this._cinemaHall, seat);
                 }
             }
             catch (Exception e)
@@ -90,10 +91,12 @@ namespace CinemaAppBackend.Repositories
                 throw;
             }
 
+            return this._cinemaHall;
         }
 
-        public void GenerateCinemaHallStatistics()
+        public CinemaHallStatistics GenerateCinemaHallStatistics()
         {
+            CinemaHallStatistics cinemaHallStatistics;
             try
             {
                 if (this._cinemaHall == null)
@@ -101,17 +104,15 @@ namespace CinemaAppBackend.Repositories
                     throw new ArgumentNullException($"Cinema hall",
                         "Cinema hall cannot be null. Kindly initialize cinema hall by selecting option A");
                 }
-                var cinemaHallStatistics = _generateCinemaHallStatistics.GetCinemaHallStatistics(this._cinemaHall);
-                if (cinemaHallStatistics!=null)
-                {
-                    Console.WriteLine(cinemaHallStatistics.ToString());
-                }
+                cinemaHallStatistics = _generateCinemaHallStatistics.GetCinemaHallStatistics(this._cinemaHall);
             }
             catch (Exception e)
             {
                 Log.Logger.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - Error Generating Statistics for Cinema Hall {e.Message}");
                 throw;
             }
+
+            return cinemaHallStatistics;
         }
     }
 }

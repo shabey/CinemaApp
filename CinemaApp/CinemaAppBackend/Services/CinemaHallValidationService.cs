@@ -10,11 +10,11 @@ namespace CinemaAppBackend.Services
     {
         public bool ValidateCinemaHallDimensions(string noOfRows, string noOfSeatsPerRows)
         {
-            if (!int.TryParse(noOfRows, out var row) || row <=0 || row>= int.MaxValue)
+            if (!int.TryParse(noOfRows, out var row) || row < 0 || row>= int.MaxValue)
             {
                 throw new ArgumentOutOfRangeException(nameof(noOfRows), $"Invalid no of number of rows “{noOfRows}” entered. Please enter a valid number of number of rows");
             }
-            if (!int.TryParse(noOfSeatsPerRows, out var seat) || seat <= 0 || seat >= int.MaxValue)
+            if (!int.TryParse(noOfSeatsPerRows, out var seat) || seat < 0 || seat >= int.MaxValue)
             {
                 throw new ArgumentOutOfRangeException(nameof(noOfSeatsPerRows), $"Invalid no of seats “{noOfSeatsPerRows}” entered. Please enter a valid number of seats");
             }
@@ -49,11 +49,11 @@ namespace CinemaAppBackend.Services
                     "Cinema hall cannot be null. Kindly initialize cinema hall by selecting option A");
             }
 
-            if (!int.TryParse(rowNumber, out var row) || row <= 0 || row > cinemaHall.NoOfRows)
+            if (!int.TryParse(rowNumber, out var row) || row < 0 || row > cinemaHall.NoOfRows)
             {
                 throw new ArgumentOutOfRangeException(nameof(rowNumber), $"Invalid row number “{rowNumber}” entered. Please enter a valid row number");
             }
-            if (!int.TryParse(seatNumber, out var seat) || seat <=0 || seat > cinemaHall.NoOfSeatsPerRow)
+            if (!int.TryParse(seatNumber, out var seat) || seat < 0 || seat > cinemaHall.NoOfSeatsPerRow)
             {
                 throw new ArgumentOutOfRangeException(nameof(rowNumber), $"Invalid seat number “{seatNumber}” entered. Please enter a valid seat number");
             }

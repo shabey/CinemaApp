@@ -18,7 +18,7 @@ namespace CinemaAppBackend
         {
             services.AddTransient(typeof(IInitializeCinemaHall), typeof(InitializeCinemaHall));
             services.AddTransient(typeof(IShowCinemaHallCurrentStatus), typeof(ShowCinemaHallCurrentStatus));
-            services.AddTransient(typeof(IBuyCinemaTicket), typeof(BuyCinemaTicket));
+            services.AddTransient(typeof(IBuyCinemaHallTicket), typeof(BuyCinemaHallHallTicket));
             services.AddTransient(typeof(IGenerateCinemaHallStatistics), typeof(GenerateCinemaHallStatistics));
             services.AddTransient(typeof(ICinemaHallValidationService), typeof(CinemaHallValidationService));
             services.AddSingleton(typeof(ICinemaAppBackendRepository),new CinemaAppBackendRepository(services.BuildServiceProvider()));

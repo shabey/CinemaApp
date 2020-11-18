@@ -6,22 +6,22 @@ using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.Extensions
 {
-    internal static class CinemaHallExtension
+    public static class CinemaHallExtension
     {
-        internal static int GetNumberOfPurchasedTickets(this CinemaHall cinemaHall)
+        public static int GetNumberOfPurchasedTickets(this CinemaHall cinemaHall)
         {
             return cinemaHall.Seats.Count(x => x.BookingStatus == Constants.BookingStatus.Reserved);
         }
-        internal static float GetPercentageOccupied(this CinemaHall cinemaHall)
+        public static float GetPercentageOccupied(this CinemaHall cinemaHall)
         {
-            return cinemaHall.Capacity > 0 ? ((float)GetNumberOfPurchasedTickets(cinemaHall) / cinemaHall.Capacity) : 0;
+            return cinemaHall.TotalCapacity > 0 ? ((float)GetNumberOfPurchasedTickets(cinemaHall) / cinemaHall.TotalCapacity) : 0;
         }
         /// <summary>
         /// Current income (sum of reserved tickets)
         /// </summary>
         /// <param name="cinemaHall"></param>
         /// <returns></returns>
-        internal static float GetCurrentIncome(this CinemaHall cinemaHall)
+        public static float GetCurrentIncome(this CinemaHall cinemaHall)
         {
             var reservedSeats = cinemaHall.Seats.Where(x=>x.BookingStatus == Constants.BookingStatus.Reserved).ToList();
             return reservedSeats.Sum(x => x.TicketPrice);
@@ -31,7 +31,7 @@ namespace CinemaAppBackend.Extensions
         /// </summary>
         /// <param name="cinemaHall"></param>
         /// <returns></returns>
-        internal static float GetPotentialTotalIncome(this CinemaHall cinemaHall)
+        public static float GetPotentialTotalIncome(this CinemaHall cinemaHall)
         {
             return cinemaHall.Seats.Sum(x => x.TicketPrice);
         }

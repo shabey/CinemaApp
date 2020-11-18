@@ -14,7 +14,7 @@ namespace CinemaAppBackend.UseCases
             return new CinemaHallStatistics()
             {
                 NumberOfPurchasedTickets = cinemaHall.GetNumberOfPurchasedTickets(),
-                TotalNumbersOfSeats = cinemaHall.Capacity,
+                TotalNumbersOfSeats = cinemaHall.TotalCapacity,
                 PercentageOccupied = cinemaHall.GetPercentageOccupied(),
                 CurrentIncome = cinemaHall.GetCurrentIncome(),
                 PotentialTotalIncome = cinemaHall.GetPotentialTotalIncome()
